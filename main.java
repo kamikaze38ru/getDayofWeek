@@ -1,6 +1,6 @@
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -42,7 +42,7 @@ public class main {
                 System.out.println("Ошибка, пожалуйста повторите, месяц должен быть от 1 до 12.\n" +
                                    "Error, the month must be from 1 to 12.");
             } else {
-                month = monthfalse - 1;
+                month = monthfalse;
                 monthtrue = true;
             }
         }
@@ -51,38 +51,21 @@ public class main {
                            "Please enter a full year (e.g. 1994) click \"Enter\".");
 
         int year = scanner.nextInt();
-        if(year > 100) {
-            year = year - 1900;
-        }
 
-        Date date = new Date (year, month, day);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.YYYY");
-        String message = formatter.format(date);
-        System.out.print(message + " - ");
-        System.out.println(getDayOfWeek(date));
+
+        LocalDate date = LocalDate.of (year, month, day);
+        System.out.println("Этот день недели - " + getDayOfWeekRU(date));
+        System.out.println("This day - " + getDayOfWeekEN(date));
     }
 
 
 
-    static String getDayOfWeek(Date date) {
-        String result = "";
-        int day = date.getDay();
-        switch(day) {
-            case 0 -> result = "этот день - воскресенье.\n" +
-                               "this day is sunday.";
-            case 1 -> result = "этот день - понедельник.\n" +
-                               "this day is monday";
-            case 2 -> result = "этот день - вторник.\n" +
-                               "this day is tuesday";
-            case 3 -> result = "этот день - среда.\n" +
-                               "this day is wednesday";
-            case 4 -> result = "этот день - четверг.\n" +
-                               "this day is thursday";
-            case 5 -> result = "этот день - пятница.\n" +
-                               "this day is friday";
-            case 6 -> result = "этот день - суббота.\n" +
-                               "this day is saturday";
-        }
-        return result;
+    static String getDayOfWeekRU(LocalDate date) {
+        return date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("ru"));
     }
+
+    static String getDayOfWeekEN(LocalDate date) {
+        return date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("en"));
+    }
+
 }
